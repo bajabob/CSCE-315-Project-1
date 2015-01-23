@@ -1,0 +1,15 @@
+# tab, space, newline, & string delimited
+# 10 lines
+# point ranges: 0-100
+# x y
+ ######################
+21	38
+32	56
+21	48
+29	54
+29	25
+98	37
+50	68
+99	57
+2	59
+95	84
