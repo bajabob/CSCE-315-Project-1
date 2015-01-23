@@ -27,6 +27,7 @@ public class Debug
 	{
 		if ( ShortestCircuit.IS_DEBUG_MODE )
 		{
+			System.out.println( "List of integers: " );
 			for ( Integer i : integers )
 			{
 				System.out.println( i );

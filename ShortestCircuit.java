@@ -35,12 +35,8 @@ public class ShortestCircuit
 					System.in, "UTF-8" ) );
 
 			String input;
-
-			//printLineNumber( lineNumber++ );
-
 			while ( (input = br.readLine()) != null )
 			{
-				//printLineNumber( lineNumber++ );
 				sanitizeAndStore( input, integers );
 			}
 
@@ -52,15 +48,6 @@ public class ShortestCircuit
 
 		Debug.log( integers );
 
-	}
-
-	/**
-	 * Print a formated line number to standard out
-	 * @param lineNumber int - the line number to print
-	 */
-	private static void printLineNumber( int lineNumber )
-	{
-		System.out.print( String.format( "%4d: ", lineNumber ) );
 	}
 
 	/**
