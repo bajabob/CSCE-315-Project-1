@@ -11,6 +11,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 public class ShortestCircuit
@@ -27,6 +28,9 @@ public class ShortestCircuit
 		// keep track of stdin line number
 		int lineNumber = 1;
 
+		// Store all coordinates linearly until later when they
+		//  are used in the creation of a matrix. Saves processing 
+		//  by not creating Point objects
 		Vector<Integer> integers = new Vector<Integer>();
 
 		try
@@ -37,64 +41,73 @@ public class ShortestCircuit
 			String input;
 			while ( (input = br.readLine()) != null )
 			{
-				sanitizeAndStore( input, integers );
+				IntegerHelper.sanitizeAndStore( input, integers );
+				lineNumber++;
 			}
 
 		} catch ( IOException io )
 		{
-			System.err.println( "There was an error with your input on line "
-					+ lineNumber );
+			System.err.println( "There was an error with your input on or "
+					+ "near line " + (lineNumber / 2) + ". Exiting." );
+			return;
 		}
 
 		Debug.log( integers );
 
-	}
-
-	/**
-	 * Check whether or not the supplied string is an integer
-	 * @param s String
-	 * @return boolean
-	 */
-	public static boolean isInteger( String s )
-	{
-		try
+		// Program assumes that there is an even number of user entries
+		//  as each point requires two coordinates. Ensure this is the case.
+		if ( integers.size() % 2 != 0 )
 		{
-			int i = Integer.parseInt( s );
-		} catch ( NumberFormatException e )
-		{
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Sanitize a user input of everything except whole numbers
-	 *  and store in supplied vector. 
-	 * @param input String - the user input
-	 * @param ints Vector<Integer> - for storing integer data
-	 */
-	public static void sanitizeAndStore( String input, Vector<Integer> ints )
-	{
-		// disregard comments and null inputs
-		if ( input == null || input.contains( "#" ) )
-		{
+			System.err.println( "Please enter an even number coordinates. Can "
+					+ "not create points. Exiting." );
 			return;
 		}
 
-		// replace all non-numeric characters with a dash
-		String sanitized = input.replaceAll( "[^0-9.]", "-" );
+		int processors = Runtime.getRuntime().availableProcessors();
+		Debug.log( "Number of processors available: " + processors );
 
-		// split all items by a dash into a sub array
-		String[] split = sanitized.split( "-" );
+		// create a new matrix for processing point distances
+		double adjMatrix[][] = IntegerHelper.createAdjacencyMatrix( integers );
 
-		for ( int i = 0; i < split.length; i++ )
+		// PQ for keeping track of the best distances and their point pairs
+		PriorityQueue<PointPair> priorityQueue = new PriorityQueue<PointPair>();
+
+		// Remove duplicate calculations by eliminating the lower triangle
+		//  on the adjacency matrix (diagOffset)
+		int diagOffset = 1;
+		int totalPoints = IntegerHelper.totalPoints( integers );
+		for ( int src = 0; src < totalPoints; src++ )
 		{
-			if ( isInteger( split[i] ) )
+			for ( int dest = diagOffset; dest < totalPoints; dest++ )
 			{
-				ints.add( Integer.parseInt( split[i] ) );
+				adjMatrix[src][dest] = IntegerHelper.distance( integers, src,
+						dest );
+				priorityQueue.add( new PointPair( src, dest,
+						adjMatrix[src][dest] ) );
 			}
-
+			++diagOffset;
 		}
-	}
 
+		Debug.log( "Total Distances: " + priorityQueue.size() );
+
+		if ( IS_DEBUG_MODE )
+		{
+			PriorityQueue<PointPair> copy = new PriorityQueue<PointPair>();
+			copy.addAll( priorityQueue );
+			int count = 1;
+			while ( copy.size() > 0 )
+			{
+				System.out.println( (count++) + " " + copy.poll() );
+			}
+		}
+
+		SetManager sm = new SetManager();
+		while ( priorityQueue.size() > 0 )
+		{
+			sm.attemptAdd( priorityQueue.poll() );
+			Debug.log( sm + "" );
+			Debug.log( "---------------------" );
+		}
+
+	}
 }

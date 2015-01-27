@@ -5,7 +5,7 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-	ShortestCircuit.java
+	*.java
 	
 default: clean classes
 
