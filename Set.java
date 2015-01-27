@@ -92,31 +92,23 @@ public class Set
 		if ( p.getSource() == mHead && p.getDestination() != mTail )
 		{
 			if ( pairAdded )
-			{
 				return true;
-			}
 			mBody.add( mHead );
 			mHead = p.getDestination();
 			return true;
 		}
-
 		if ( p.getSource() == mTail && p.getDestination() != mHead )
 		{
 			if ( pairAdded )
-			{
 				return true;
-			}
 			mBody.add( mTail );
 			mTail = p.getDestination();
 			return true;
 		}
-
 		if ( p.getDestination() == mHead && p.getSource() != mTail )
 		{
 			if ( pairAdded )
-			{
 				return true;
-			}
 			mBody.add( mHead );
 			mHead = p.getSource();
 			return true;
@@ -124,9 +116,7 @@ public class Set
 		if ( p.getDestination() == mTail && p.getSource() != mHead )
 		{
 			if ( pairAdded )
-			{
 				return true;
-			}
 			mBody.add( mTail );
 			mTail = p.getSource();
 			return true;

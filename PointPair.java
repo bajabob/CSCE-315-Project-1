@@ -57,7 +57,7 @@ public class PointPair implements Comparable<PointPair>
 	@Override
 	public String toString()
 	{
-		return String.format( "%6.2f:", mDistance ) + "(" + mSource + ","
+		return String.format( "%6.2f:", mDistance ) + "(" + mSource + "->"
 				+ mDestination + ")";
 	}
 

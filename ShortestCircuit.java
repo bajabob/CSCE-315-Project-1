@@ -18,21 +18,70 @@ public class ShortestCircuit
 {
 
 	/** flag: compile in debug mode */
-	public static final boolean IS_DEBUG_MODE = true;
+	public static final boolean IS_DEBUG_MODE = false;
 
 	public static void main( String[] args )
 	{
+		Vector<Integer> userInputs = new Vector<Integer>();
+		readSTDIN( userInputs );
+		if ( !isValidInput( userInputs ) )
+			return;
 
-		Debug.log( "Running in Debug Mode" );
+		// create a new matrix for processing point distances
+		double distMatrix[][] = IntegerHelper
+				.createAdjacencyMatrix( userInputs );
 
+		// PQ for keeping track of the best distances and their point pairs
+		PriorityQueue<PointPair> priorityQueue = new PriorityQueue<PointPair>();
+
+		// calculate the total number of points provided by the user
+		int totalPoints = IntegerHelper.totalPoints( userInputs );
+		populateDistanceMatrixAndPriorityQueue( distMatrix, totalPoints,
+				userInputs, priorityQueue );
+
+		// create and merge disjoint sets
+		SetManager sm = new SetManager( totalPoints );
+		while ( priorityQueue.size() > 0 && !sm.isDone() )
+		{
+			sm.attemptAdd( priorityQueue.poll() );
+		}
+		sm.printAddedSetList( distMatrix );
+	}
+
+	/**
+	 * Populate the distance matrix and priority queue
+	 * @param distMatrix double[][]
+	 * @param totalPoints int
+	 * @param ints Vector<Integer>
+	 * @param pq PriorityQueue<PointPair>
+	 */
+	private static void populateDistanceMatrixAndPriorityQueue(
+			double distMatrix[][], int totalPoints, Vector<Integer> ints,
+			PriorityQueue<PointPair> pq )
+	{
+		// Remove duplicate calculations by eliminating the lower triangle
+		//  on the adjacency matrix (diagOffset)
+		int diagOffset = 1;
+		for ( int src = 0; src < totalPoints; src++ )
+		{
+			for ( int dest = diagOffset; dest < totalPoints; dest++ )
+			{
+				distMatrix[src][dest] = IntegerHelper
+						.distance( ints, src, dest );
+				pq.add( new PointPair( src, dest, distMatrix[src][dest] ) );
+			}
+			++diagOffset;
+		}
+	}
+
+	/**
+	 * Read a series of integers or other inputs from the STDIN
+	 * @param integers Vector<Integer>
+	 */
+	private static void readSTDIN( Vector<Integer> integers )
+	{
 		// keep track of stdin line number
 		int lineNumber = 1;
-
-		// Store all coordinates linearly until later when they
-		//  are used in the creation of a matrix. Saves processing 
-		//  by not creating Point objects
-		Vector<Integer> integers = new Vector<Integer>();
-
 		try
 		{
 			BufferedReader br = new BufferedReader( new InputStreamReader(
@@ -51,63 +100,22 @@ public class ShortestCircuit
 					+ "near line " + (lineNumber / 2) + ". Exiting." );
 			return;
 		}
+	}
 
-		Debug.log( integers );
-
+	/**
+	 * Is the user input valid?
+	 * @param boolean
+	 */
+	private static boolean isValidInput( Vector<Integer> integers )
+	{
 		// Program assumes that there is an even number of user entries
 		//  as each point requires two coordinates. Ensure this is the case.
 		if ( integers.size() % 2 != 0 )
 		{
 			System.err.println( "Please enter an even number coordinates. Can "
 					+ "not create points. Exiting." );
-			return;
+			return false;
 		}
-
-		int processors = Runtime.getRuntime().availableProcessors();
-		Debug.log( "Number of processors available: " + processors );
-
-		// create a new matrix for processing point distances
-		double adjMatrix[][] = IntegerHelper.createAdjacencyMatrix( integers );
-
-		// PQ for keeping track of the best distances and their point pairs
-		PriorityQueue<PointPair> priorityQueue = new PriorityQueue<PointPair>();
-
-		// Remove duplicate calculations by eliminating the lower triangle
-		//  on the adjacency matrix (diagOffset)
-		int diagOffset = 1;
-		int totalPoints = IntegerHelper.totalPoints( integers );
-		for ( int src = 0; src < totalPoints; src++ )
-		{
-			for ( int dest = diagOffset; dest < totalPoints; dest++ )
-			{
-				adjMatrix[src][dest] = IntegerHelper.distance( integers, src,
-						dest );
-				priorityQueue.add( new PointPair( src, dest,
-						adjMatrix[src][dest] ) );
-			}
-			++diagOffset;
-		}
-
-		Debug.log( "Total Distances: " + priorityQueue.size() );
-
-		if ( IS_DEBUG_MODE )
-		{
-			PriorityQueue<PointPair> copy = new PriorityQueue<PointPair>();
-			copy.addAll( priorityQueue );
-			int count = 1;
-			while ( copy.size() > 0 )
-			{
-				System.out.println( (count++) + " " + copy.poll() );
-			}
-		}
-
-		SetManager sm = new SetManager();
-		while ( priorityQueue.size() > 0 )
-		{
-			sm.attemptAdd( priorityQueue.poll() );
-			Debug.log( sm + "" );
-			Debug.log( "---------------------" );
-		}
-
+		return true;
 	}
 }
