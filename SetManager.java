@@ -1,3 +1,8 @@
+/**
+ * A set manager takes care of managing disjoint sets and merging them 
+ *  when they share common end points. It does not allow for cycles in the
+ *  resulting graphs to be created.
+ */
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;

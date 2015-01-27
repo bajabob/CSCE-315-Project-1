@@ -1,3 +1,10 @@
+/**
+ * A set represents a single disjoint set with a head, tail and a body.
+ *  Essentially, this custom data structure allows us to know the head
+ *  and tail elements at all times while also allowing the "body" (all
+ *  the other points in the set) to be searched in O(log(V)) time where
+ *  V is the number of vertices.
+ */
 import java.util.TreeSet;
 
 public class Set

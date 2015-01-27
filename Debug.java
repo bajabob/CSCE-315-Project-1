@@ -1,11 +1,9 @@
-
-
-import java.util.Vector;
-
 /**
  * Debug logging
  * @author Robert Timm | bobtimm@tamu.edu
  */
+import java.util.Vector;
+
 public class Debug
 {
 
