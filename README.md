@@ -1,8 +1,14 @@
-CSCE-315-Project-1
-==================
-Robert (Bob) Timm
-bobtimm@tamu.edu
+## CSCE-315-Project-1 Traveling Salesman
 
+### Guielines
+Your program should read from the standard input a list of points
+and find the shortest closed path connecting the points, in the shortest time.
+The input will be the x and y coordinates of the points as non-negative
+integers separated by white space (space, tab, newline, etc.); end of file is 
+indicated by Control-D for console input.  Any line of input beginning with # 
+is a comment, which your program should ignore.
+
+### Running
 To run: 
  - Open a terminal and navigate to this directory.
  - Type: "make"
@@ -14,7 +20,7 @@ You can change the test files to be whatever you please,
 "c.txt" - sample provided by homework
 "d.txt" - 500 points
 
-Sample output (on tests/b.txt):
+### Sample output (on tests/b.txt):
 8
 4
 0
@@ -28,7 +34,7 @@ Sample output (on tests/b.txt):
 8
 297.48784942831895
 
-Overview of Data Structures employed
+### Overview of Data Structures employed
  * - Read User Input
  * - Calculate distance between points in ONLY the upper triangle of the
  *    distance matrix while concurrently storing points and distances in
