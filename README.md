@@ -1,6 +1,9 @@
 ## CSCE-315-Project-1 Traveling Salesman
 
-### Guielines
+### Notes
+Recived an A on this project, but this was not the fastest implemention when compared to my peers. Next time I attempt this problem I will implement a linear programming solution. 
+
+### Guidelines
 Your program should read from the standard input a list of points
 and find the shortest closed path connecting the points, in the shortest time.
 The input will be the x and y coordinates of the points as non-negative
