@@ -1,7 +1,7 @@
 ## CSCE-315-Project-1 Traveling Salesman
 
 ### Notes
-Received an A on this project, but this was not the fastest implementation when compared to my peers. Next time I attempt this problem I will implement a linear programming solution. 
+Received an A on this project, but this was not the fastest implementation when compared to my peers. Next time I attempt this problem I will implement a linear programming solution instead of a greedy algorithm. 
 
 ### Guidelines
 Your program should read from the standard input a list of points
