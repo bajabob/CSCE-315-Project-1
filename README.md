@@ -8,11 +8,11 @@ integers separated by white space (space, tab, newline, etc.); end of file is
 indicated by Control-D for console input.  Any line of input beginning with # 
 is a comment, which your program should ignore.
 
-### Running
+### Compile & Run
 To run: 
  - Open a terminal and navigate to this directory.
- - Type: "make"
- - Type: "java ShortestCircuit < tests/d.txt"
+ - Type: `make`
+ - Type: `java ShortestCircuit < tests/d.txt`
 
 You can change the test files to be whatever you please,
 "a.txt" - 1000 points
@@ -21,6 +21,7 @@ You can change the test files to be whatever you please,
 "d.txt" - 500 points
 
 ### Sample output (on tests/b.txt):
+```
 8
 4
 0
@@ -33,6 +34,7 @@ You can change the test files to be whatever you please,
 5
 8
 297.48784942831895
+```
 
 ### Overview of Data Structures employed
  * - Read User Input
